@@ -1,0 +1,32 @@
+from pprint import pprint
+
+f = open('https://github.com/madmadamkri/hometask-7/blob/main/recipes.txt', 'r', encoding = 'utf-8')
+file_read = f.read()
+cook_book = {}
+
+for dish in file_read.split('\n\n'):
+  dish_1 = dish.split('\n')
+  cook_book[dish_1[0]]=[]
+  for comp in dish_1[2:]:
+    ingredient_name, quantity, measure = comp.split(' | ')
+    book_tmp = {'ingredient_name' :  ingredient_name, 'quantity': quantity, 'measure': measure}
+    cook_book[dish_1[0]].append(book_tmp)
+
+pprint(cook_book)
+print()
+
+def get_shop_list_by_dishes(dishes, person_count):
+  shop_list = {}
+  for dish in dishes:
+    if dish in cook_book:
+      for values in cook_book[dish]:
+        if values['ingredient_name'] in shop_list:
+          shop_list[values['ingredient_name']] += int(values['quantity']) * person_count
+        else:
+          shop_list[values['ingredient_name']] = {'quantity' : int(values['quantity']) * person_count, 'measure': values['measure']}
+    else:
+      print('sorry')
+  
+  pprint(shop_list)
+
+ get_shop_list_by_dishes(['Омлет'], 3)
